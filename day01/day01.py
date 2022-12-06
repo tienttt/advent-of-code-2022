@@ -17,6 +17,7 @@ def part01(elves):
     print (max(elves))
 
 def part02(elves):
+    elves.sort(reversed=True)
     print('The total energies of top 3 elves:')   
     print (elves[0] + elves[1] + elves[2])
 
