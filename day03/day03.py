@@ -12,20 +12,26 @@ def get_priority_dict():
     #SCORE_LOOKUP = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     #score = SCORE_LOOKUP.index(char) + 1
 
+
+#item: a list 
+def find_mutual_item(items):
+    result = set(items[0])
+    for item in items:
+        result = result & set(item)
+    mutual_item = list(result)[0]
+    return mutual_item
+
+
 def part01(filepath, priority_dict):
     final_score = 0
     with open(filepath) as f:
         for line in f:
-            line = line.rstrip('\n')
+            line = line.strip()
             length = len(line)
             length_in_half = int(len(line) / 2)
             first_compartment = line[0:length_in_half]
             second_compartment = line[(length_in_half) : length]
-
-            first_compartment_set = set(first_compartment)
-            second_compartment_set = set(second_compartment)
-
-            mutual_item = list(first_compartment_set.intersection(second_compartment_set))[0]
+            mutual_item = find_mutual_item([first_compartment, second_compartment])
             
             final_score += priority_dict[mutual_item]
 
@@ -38,27 +44,20 @@ def part02(filepath, priority_dict):
         elve_group = []
         lines = []
         for line in f:
-            line = line.rstrip('\n')
+            line = line.strip()
             lines.append(line)  
-#0, 1, 2, ..299
         j = 1
-        for i in list(range(0, len(lines))):
+        for i in list(range(len(lines))):
             if ((j) % 4 != 0):
                 elve_group.append(lines[i])
                 j += 1
                 if (i == (len(lines) - 1)):
-                    elve_1 = set (elve_group[0])             
-                    elve_2 = set (elve_group[1])
-                    elve_3 = set (elve_group[2])
-                    mutual_item_in_group = list((elve_1.intersection(elve_2)).intersection(elve_3))[0]
-                    print(elve_group, mutual_item_in_group)
+                    mutual_item_in_group = find_mutual_item(elve_group)
+                    #print(elve_group, mutual_item_in_group)
                     final_score += priority_dict[mutual_item_in_group]
             else:   
-                elve_1 = set (elve_group[0])             
-                elve_2 = set (elve_group[1])
-                elve_3 = set (elve_group[2])
-                mutual_item_in_group = list((elve_1.intersection(elve_2)).intersection(elve_3))[0]
-                print(elve_group, mutual_item_in_group)
+                mutual_item_in_group = find_mutual_item(elve_group)
+                #print(elve_group, mutual_item_in_group)
                 final_score += priority_dict[mutual_item_in_group]
                 elve_group = []
                 elve_group.append(lines[i])
